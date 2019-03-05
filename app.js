@@ -31,6 +31,7 @@ app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dis
 app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')));
 app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist/css')));
 
+
 // Passport Config
 require('./config/passport')(passport);
 
@@ -110,7 +111,7 @@ var server = app.listen(port, function () {
 //socket setup
 var io = socket(server);
 io.on('connection',function(socket){
-    console.log('made socket connection')
+    console.log('made socket connection', socket.id)
 
 
 });
