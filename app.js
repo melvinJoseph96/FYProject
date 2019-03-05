@@ -11,6 +11,8 @@ var session = require('express-session');
 var LocalStrategy = require('passport-local');
 var passport = require('passport');
 var flash = require('connect-flash');
+var socket = require('socket.io');
+
 
 //Setting up mongodb
 
@@ -33,7 +35,7 @@ app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist/cs
 require('./config/passport')(passport);
 
 //Setting view engine
-app.set('views', './src/views');
+app.set('views', './views');
 app.use(expressLayouts);
 app.set('view engine', 'ejs'); 
 
@@ -49,6 +51,8 @@ app.use(session({
     resave: true
 
 }));
+
+
 
 //Validator
 app.use(expressValidator({
@@ -99,6 +103,14 @@ app.use('/users', require('./routes/users.js'));
 const port = process.env.port || 3000;
 const appRouter = express.Router();
 
-app.listen(port, function () {
+var server = app.listen(port, function () {
     debug(`listening on port ${chalk.green(port)}`)
-})
+});
+
+//socket setup
+var io = socket(server);
+io.on('connection',function(socket){
+    console.log('made socket connection')
+
+
+});
