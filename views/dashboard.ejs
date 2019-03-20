@@ -19,7 +19,8 @@
             <p class="lead mb-3">Welcome <%= user.name %></p>
             <br>
             <p class="lead mb-3"><b>What would you like to do?</b></p>
-            <button id = "symptoms" class ="btn btn-primary">Check your symptoms</button>
+            <button id = "diagnosis" class ="btn btn-primary" onclick="window.location.href = '/age'" >Check your symptoms</button> 
+           
             <br>
             <br>
             <button id = "video" class ="btn btn-primary">Talk to a medical professional</button>
@@ -31,7 +32,10 @@
    
 
      <script src="/socket.io/socket.io.js"></script>
+
 <script>
+
+
   var socket = io();
 </script> 
 

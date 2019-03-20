@@ -12,4 +12,17 @@ router.get('/dashboard', ensureAuthenticated, (req, res) =>
   })
 );
 
+//Symptoms checker
+router.get('/symChecker',ensureAuthenticated, (req,res) =>
+  res.render('symChecker', {
+    user:req.user
+  })
+);
+
+router.get('/age',ensureAuthenticated, (req,res) =>
+  res.render('age', {
+    user:req.user
+  })
+);
+
 module.exports = router;

@@ -13,7 +13,6 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var socket = require('socket.io');
 
-
 //Setting up mongodb
 
 var mongoose = require('mongoose');
