@@ -12,6 +12,7 @@ var LocalStrategy = require('passport-local');
 var passport = require('passport');
 var flash = require('connect-flash');
 var socket = require('socket.io');
+const request = require("request");
 
 //Setting up mongodb
 
