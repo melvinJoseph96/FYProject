@@ -77,11 +77,21 @@ router.post('/register', (req, res) => {
 
 // Login
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/users/login',
-    failureFlash: true
-  })(req, res, next);
+
+  if(req.email=='medial_professional@vidhealth.com'){
+    res.render('MPDashboard')
+
+
+  }else{
+    passport.authenticate('local', {    
+      successRedirect:  '/dashboard',
+      failureRedirect: '/users/login',
+      failureFlash: true
+    })(req, res, next);
+
+  }
+
+  
 });
 
 // Logout

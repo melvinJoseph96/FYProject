@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { ensureAuthenticated } = require('../config/auth');
+var request = require('request');
 
 // Welcome Page
 router.get('/', (req, res) => res.render('welcome'));
@@ -12,12 +13,16 @@ router.get('/dashboard', ensureAuthenticated, (req, res) =>
   })
 );
 
+
+
 //Symptoms checker
 router.get('/symChecker',ensureAuthenticated, (req,res) =>
   res.render('symChecker', {
     user:req.user
   })
 );
+
+router.post('/')
 
 router.get('/age',ensureAuthenticated, (req,res) =>
   res.render('age', {

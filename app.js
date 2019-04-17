@@ -1,4 +1,3 @@
-
 var express = require('express');
 var chalk = require('chalk');
 var debug = require('debug')('app');
@@ -13,6 +12,12 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var socket = require('socket.io');
 const request = require("request");
+const axios = require('axios');
+
+users =[];
+connections = [];
+
+
 
 //Setting up mongodb
 
@@ -100,21 +105,33 @@ app.use(function (req, res, next) {
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
+
 //Setting up the port
 const port = process.env.port || 3000;
-const appRouter = express.Router();
+
 
 var server = app.listen(port, function () {
-    debug(`listening on port ${chalk.green(port)}`)
+    console.log(`listening on port ${chalk.green(port)}`)
 });
+
 
 //socket setup
 var io = socket(server);
 io.on('connection',function(socket){
-    console.log('made socket connection', socket.id)
+    connections.push(socket);
+    console.log('Connected: %s sockets connected', connections.length);
+    
 
+    socket.on('disconnect', function(){
+        connections.splice(connections.indexOf(socket),1);
+        console.log('Disconnected: %s sockets connected', connections.length)
+    
+    
+    })
 
 });
+
+
 
 
 
