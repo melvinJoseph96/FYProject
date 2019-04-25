@@ -1,91 +1,178 @@
   <!DOCTYPE html>
   <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-      <link
-        rel="stylesheet"
-        href="https://bootswatch.com/4/journal/bootstrap.min.css"
-      />
-      
-  </script>
-  <script src ="js/srchFun.js" ></script>
-      <title>VIDHealth</title>
-    </head>
-    <body bgcolor="#95b7ed">
-      <body>
-        <h1 class="mt-4">Check Your Symptoms</h1>
-        <div class="card-text">
-          <h5 class="card-title">Please select your sex and age.</h5>
-          <form>
-            <div class="form-group row">
-              <label for="input-sex" class="col-sm-2 col-form-label">Sex</label>
-              <div class="col-sm-10">
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="sex-radio-inline-1" name="sex-radio-inline" class="input-sex custom-control-input"
-                    value="male" checked>
-                  <label class="custom-control-label" for="sex-radio-inline-1"><i class="fa fa-fw fa-male"></i> male</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="sex-radio-inline-2" name="sex-radio-inline" class="input-sex custom-control-input"
-                    value="female">
-                  <label class="custom-control-label" for="sex-radio-inline-2"><i class="fa fa-fw fa-female"></i>
-                    female</label>
-                </div>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootswatch.com/4/journal/bootstrap.min.css" />
+
+    </script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/apiProcessor.js"></script>
+    <title>VIDHealth</title>
+  </head>
+
+  <body bgcolor="#95b7ed">
+
+    <body>
+      <h1 class="mt-4">Check Your Symptoms</h1>
+      <div class="card-text">
+        <h5 class="card-title">Please select your sex and age.</h5>
+        <form>
+          <div class="form-group row">
+            <label for="input-sex" class="col-sm-2 col-form-label">Sex</label>
+            <div class="col-sm-10">
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="sex-radio-inline-1" name="sex-radio-inline"
+                  class="input-sex custom-control-input" value="male" checked>
+                <label class="custom-control-label" for="sex-radio-inline-1"><i class="fa fa-fw fa-male"></i>
+                  male</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="sex-radio-inline-2" name="sex-radio-inline"
+                  class="input-sex custom-control-input" value="female">
+                <label class="custom-control-label" for="sex-radio-inline-2"><i class="fa fa-fw fa-female"></i>
+                  female</label>
               </div>
             </div>
-            <div class="form-group row">
-              <label for="input-age" class="col-sm-2 col-form-label">Age</label>
-              <div class="col-sm-2">
-                <input type="number" class="form-control" id="input-age" value="30">
-              </div>
+          </div>
+          <div class="form-group row">
+            <label for="input-age" class="col-sm-2 col-form-label">Age</label>
+            <div class="col-sm-2">
+              <input type="number" class="form-control" id="input-age" value="30">
+            </div>
+          </div>
+        </form>
+        <br>
+        <br>
+
+      </div>
+     
+      
+      <h5 class="card-title">Please check any that apply to you.</h5><br>
+     
+
+          <div class="card-text">
+              <h6 class="card-title">Demographics and history.</h6>
+           
+                    <div class="custom-control custom-checkbox">
+                      <input id="p_7 " name = "cba" value="demo" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_7 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">BMI over 30</label><br>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                      <input id="p_9 " name = "cba" value="demo" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_9 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">Hypertension</label><br>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                      <input id="p_10 " name = "cba" value="demo" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_10 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">High cholesterol</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_28 " name = "cba" value="demo" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_28 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">Smoking</label><br>
+                    </div>
+
+              <h6 class="card-title">Please select where you live or have recently traveled to</h6>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_13 " name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_13 "  class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">North America without Mexico</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_14 " name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_14 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">Latin and South America</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_15" name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_15 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">Europe</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_16 " name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_16 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">Northern Africa</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_17 " name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_17 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">Central Africa</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_18 " name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_18 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0"> Southern Africa</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_19 " name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_19 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">Australia and Oceanial</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_20 " name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_20 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">Russia, Kazakhstan and Mongolia</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_21 " name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_21 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0"> Middle East</label><br>
+                    </div>
+                      <div class="custom-control custom-checkbox">
+                      <input id="p_22 " name = "cba" value="travel" type="checkbox" class="input-risk custom-control-input">
+                      <label for="p_22 " class="custom-control-label custom-checkbox mb-2 mr-sm-2 mb-sm-0">India, China and Southeastern Asia</label><br>
+                    
+                   
+                    </div>
+
+                    
+                
+             
+          </div>
+          <br>
+
+      <div class="container">
+
+        <h5 class="card-title">Tell us how you feel.</h5>
+        <div class="card-text">
+          <form>
+            <div class="form-group">
+              <label for="input-feel">We will try to recognize your symptoms using Natural Language Processing
+                algorithms.</label>
+              <textarea placeholder="e.g. I got headache" class="form-control" id="input-feel"
+                oninput="nlp()"></textarea>
+
+              <br>
+
             </div>
           </form>
-          <br>
-          <br>
-      
-        </div>
-      
-        <div class="container">
-      
-          <h5 class="card-title">Tell us how you feel.</h5>
-          <div class="card-text">
-            <form>
-              <div class="form-group">
-                <label for="input-feel">We will try to recognize your symptoms using Natural Language Processing
-                  algorithms.</label>
-                <textarea placeholder="e.g. I got headache" class="form-control" id="input-feel" oninput="nlp()"></textarea>
-                potato
-                <br>
-                <button id="observ" class="btn btn-primary float-right">Check <i class="fa fa-chevron-right"></i></button>
-              </div>
-            </form>
-            <p>Identified observations:</p>
-            <ul class="list-unstyled" id="observations">
-            </ul>
-      
-            <br>
-            <br>
-            <button id="observ" class="btn btn-primary float-right">Next <i class="fa fa-chevron-right"></i></button>
-          </div>
-          
-          <br>
-      
-          <br>
-          <br>
-          <a href="/dashboard" class="btn btn-secondary">back</a>
-      
-      </body>
+          <p>Identified observations:</p>
+          <ul class="list-unstyled" id="observations">
+          </ul>
 
-      
-  
-      <script
-        src="js/jquery.slim.min.js"></script>
-      <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-      <script src="/js/bootstrap.min.js"></script>
+          <br>
+          <p>observation IDs:</p>
+          <ul class="list-unstyled" id="obs-IDs">
+          </ul>
+      </div>
+
+          <br>
+          <button id="diagnosis" class="btn btn-primary float-right" onclick="diagnose()">Next <i
+              class="fa fa-chevron-right"></i></button>
+        </div>
+        
+
+        <br>
+
+        <br>
+        <br>
+        <a href="/dashboard" class="btn btn-secondary">back</a>
+
     </body>
+    <script>
+      
+    </script>
+
+
+
+
+    <script src="js/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+  </body>
+
   </html>
-  

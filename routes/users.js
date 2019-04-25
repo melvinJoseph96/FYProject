@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 // Load User model
 const User = require('../models/User');
+const medical_Professional = require('../models/mUser');
 
 // Login Page
 router.get('/login', (req, res) => res.render('login'));

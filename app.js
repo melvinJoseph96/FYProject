@@ -1,4 +1,4 @@
-var express = require('express');
+const express = require('express');
 var chalk = require('chalk');
 var debug = require('debug')('app');
 var path = require('path');
@@ -17,6 +17,9 @@ const axios = require('axios');
 users =[];
 connections = [];
 
+//Init App
+const app = express();
+
 
 
 //Setting up mongodb
@@ -27,8 +30,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 
-//Init App
-var app = express();
+
 
 //Settng static folders
 app.use(express.static(path.join(__dirname, '/public/')));
@@ -36,14 +38,15 @@ app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dis
 app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')));
 app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist/css')));
 
-
-// Passport Config
-require('./config/passport')(passport);
-
 //Setting view engine
 app.set('views', './views');
 app.use(expressLayouts);
 app.set('view engine', 'ejs'); 
+
+// Passport Config
+require('./config/passport')(passport);
+
+
 
 
 //BodyParser middleware
@@ -106,15 +109,6 @@ app.use(function (req, res, next) {
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 
-//Setting up the port
-const port = process.env.port || 3000;
-
-
-var server = app.listen(port, function () {
-    console.log(`listening on port ${chalk.green(port)}`)
-});
-
-
 //socket setup
 var io = socket(server);
 io.on('connection',function(socket){
@@ -130,6 +124,19 @@ io.on('connection',function(socket){
     })
 
 });
+
+//Setting up the port
+const port = process.env.port || 3000;
+
+
+var server = app.listen(port, function () {
+    console.log(`listening on port ${chalk.green(port)}`)
+});
+
+
+
+
+module.exports = server
 
 
 
