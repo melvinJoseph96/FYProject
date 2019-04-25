@@ -1,18 +1,18 @@
 function load() {
     var queryRes = sessionStorage.getItem("api_query")
     var query = sessionStorage.getItem('query')
-    console.log(query)
     
-    var jsonObject = JSON.parse(queryRes)
-    var jsonQuery = JSON.parse(query)
-    console.log(jsonObject)
-    console.log(jsonQuery)
-
-    document.getElementById("question").innerHTML = jsonObject.question.text
     
-    if(jsonObject.question.type == 'group_single'){
+    var jsonResponse = JSON.parse(queryRes)
+    var jsonRequest = JSON.parse(query)
+    console.log(jsonResponse)
+    console.log(jsonRequest)
 
-        var items = jsonObject.question.items
+    document.getElementById("question").innerHTML = jsonResponse.question.text
+    
+    if(jsonResponse.question.type == 'group_single'){
+
+        var items = jsonResponse.question.items
         let answersGroupSingle =''
         for (let o of items) {
             answersGroupSingle += 
@@ -26,13 +26,14 @@ function load() {
                 
            
 
-          document.getElementById('step-container').innerHTML = answersGroupSingle; 
+          document.getElementById('step-container').innerHTML = answersGroupSingle;
+
 
 
     }
-    if(jsonObject.question.type == 'group_multiple'){
+    if(jsonResponse.question.type == 'group_multiple'){
 
-        var items = jsonObject.question.items
+        var items = jsonResponse.question.items
         let answersGroupMultiple =''
         for (let o of items) {
 
@@ -48,19 +49,27 @@ function load() {
         
     }
 
-    if(jsonObject.question.type == 'single'){
+    if(jsonResponse.question.type == 'single'){
         document.getElementById('next-step').disabled = true
 
 
         answerSingle =   
         `
         <div>
-        <button type="button" data-value="true" class="next-question btn btn-success">Yes</button>
-        <button type="button" data-value="false" class="next-question btn btn-danger">No</button>
-        <button type="button" data-value="unknown" class="next-question btn btn-info">Skip question</button>
+        <button type="button" id ="yes" value="${jsonResponse.question.text}" data-value="true" class="next-question btn btn-success">Yes</button>
+        <button type="button" id ="no" value="${jsonResponse.question.text}" data-value="false" class="next-question btn btn-danger">No</button>
+        <button type="button" id ="skip" value="${jsonResponse.question.text}" data-value="unknown" class="next-question btn btn-info">Skip question</button>
       </div> 
       `
       document.getElementById('step-container').innerHTML = answerSingle;
+      document.getElementById("yes").onclick = function(){
+
+
+
+
+      }
+
+
       
       
 
