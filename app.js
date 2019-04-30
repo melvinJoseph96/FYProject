@@ -1,21 +1,20 @@
 const express = require('express');
 var chalk = require('chalk');
-var debug = require('debug')('app');
 var path = require('path');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 const expressLayouts = require('express-ejs-layouts');
-var ebs = require('express-handlebars');
 var session = require('express-session');
-var LocalStrategy = require('passport-local');
 var passport = require('passport');
 var flash = require('connect-flash');
 var socket = require('socket.io');
-const request = require("request");
-const axios = require('axios');
+const cookieParser = require('cookie-parser')
 
-users =[];
-connections = [];
+users =[]; // Total users logged in to application
+medicalUsers = []; // Total medical professionals logged in
+clients = [] // Total clients logged in
+connections = []; // Total socket connections
+readyMedics = [] // Total medics who are ready for chat
 
 //Init App
 const app = express();
@@ -26,6 +25,7 @@ const app = express();
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/Users',{ useNewUrlParser: true });
+mongoose.set('useFindAndModify', false)
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
@@ -57,9 +57,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
     secret:'secret',
     saveUninitialized: true,
-    resave: true
+    resave: true,
+    cookie: { maxAge: 600000*4 }
 
 }));
+
+app.use(cookieParser());
 
 
 
@@ -109,21 +112,7 @@ app.use(function (req, res, next) {
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 
-//socket setup
-var io = socket(server);
-io.on('connection',function(socket){
-    connections.push(socket);
-    console.log('Connected: %s sockets connected', connections.length);
-    
 
-    socket.on('disconnect', function(){
-        connections.splice(connections.indexOf(socket),1);
-        console.log('Disconnected: %s sockets connected', connections.length)
-    
-    
-    })
-
-});
 
 //Setting up the port
 const port = process.env.port || 3000;
@@ -133,8 +122,54 @@ var server = app.listen(port, function () {
     console.log(`listening on port ${chalk.green(port)}`)
 });
 
+//socket setup
+var io = socket(server);
 
 
+io.on('connection',function(socket){
+    //console.log(socket)
+    
+    
+    connections.push(socket.id);    
+    // console.log(connections)    
+    // console.log(users)
+    console.log("medics: "+medicalUsers.length)
+        console.log ("clients: "+clients.length)
+    console.log('Connected: %s sockets connected', connections.length);
+
+
+    
+
+    
+
+    socket.on('disconnect', function(){
+        var index = connections.indexOf(socket.id)
+        var user = users[index]
+        if(medicalUsers.includes(user)){
+            var medicalIndex = medicalUsers.indexOf(user)
+            medicalUsers.splice(medicalIndex,1)
+        }else{
+            var clientIndex = clients.indexOf(user);
+            clients.splice(clientIndex,1)
+        }    
+        
+
+       
+        connections.splice(index,1);       
+        users.splice(index, 1);
+        
+       
+        
+        // console.log(users)
+        console.log("medics: "+medicalUsers.length)
+        console.log ("clients: "+clients.length)
+        
+        console.log('Disconnected: %s sockets connected', connections.length)
+    
+    
+    })
+
+});
 
 module.exports = server
 

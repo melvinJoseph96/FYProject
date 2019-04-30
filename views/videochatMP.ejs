@@ -9,34 +9,48 @@
     integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="https://bootswatch.com/4/journal/bootstrap.min.css" />
   <script src="js/dashboardControl.js"></script> 
+  <style>
+      table.medicTable {
+        font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+b{
+    color:lawngreen
+
+}
+
+
+  
+  </style>
 
   <title>VIDHealth</title>
 </head>
 
 
 
-<body onload="dashLoad()">
+<body >
   
-    <div class="container">
-      <h1 class="mt-4">Dashboard</h1> 
-      <p class="lead mb-3">Welcome <%= user.name %></p>
+    <div class="container" id = "medUsersOnline" value="<%= user.email %>" >
+      <h1 class="mt-4">Video Chat Portal</h1> 
+      
+      <p class="lead mb-3">Online clients: <%= clients.length %></p>
+      <p class="lead mb-3" id = "medUsersOnline" >Your status has been updated to <b color="green"><B>AVAILABLE</B></b><p ></p></p>   
       <br>
       
-          <p class="lead mb-3" id = "medUsersOnline">Number of Medical Professionals online = <%=medicalUsers.length%></p>
+          <p class="lead mb-3" id = "medUsersOnline">Waiting for a client to call...</p>          
+          
 
-
-     
       
       <br>
-      <p class="lead mb-3"><b>What would you like to do?</b></p>
-      <button id="diagnosis" class="btn btn-primary" onclick="window.location.href = '/symChecker'">Check your
-        symptoms</button>
-  
-      <br>
-      <br>
-      <button id="video" class="btn btn-primary" onclick="window.location.href = '/chat'">Talk to a medical professional</button>
-      <br>
-      <br>
+      
   
       
 
@@ -45,43 +59,18 @@
 
 
   
-
-    <a href="/users/logout" class="btn btn-secondary">Logout</a>
+      
+    <button id = "medicReady" value="<%= user.email %>" class="btn btn-secondary" onclick="back2d()">Back to Dashboard</button>
   </div>
 
 
-  <script src="/socket.io/socket.io.js"></script>
-
-  <script>
-    var socket = io();
-    
-    
-
-  </script>
-  <script src="http://code.jquery.com/jquery-latest.js"></script>
-  <script>
-  jQuery(function ($) {
-    refresh();    
-
-    function refresh(){
-      //console.log("im in")
-      setTimeout(function(){
-        $('medUsersOnline').fadeOut('slow').load("dashboard").fadeIn('slow');
-        refresh();
-
-
-      })
-
-    }
-  })
+ 
 
 
       
       
   
-  
-  
-  </script>
+
 
 
 
@@ -95,6 +84,6 @@
     integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
   </script>
 </body>
-<script src="js/sock.js"></script>
+
 
 </html>

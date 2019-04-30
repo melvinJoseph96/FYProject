@@ -98,28 +98,55 @@ console.log(checkboxesChecked)
 }
 
 function nlp() {
-  const url = "https://api.infermedica.com/v2/parse"
-  load(url)
-
-  function load(url) {
-    const content = document.getElementById("input-feel").value;
-    // console.log('Request: '+content)
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        var obj = JSON.parse(xhr.response)
-
-        responseToJson(obj.mentions)
-      }
-    }
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('App-Key', 'b1391d83c8e0f6951c8690c51d4be6a5');
-    xhr.setRequestHeader('App-Id', 'd94d8f95');
-    xhr.send(JSON.stringify({
-      text: content
-    }));
+  const content = document.getElementById("input-feel").value;
+  
+  fetch('https://api.infermedica.com/v2/parse', {
+    method: 'post',
+    body: JSON.stringify({
+           text: content
+         }),
+    headers: {
+      "Content-Type": "application/json",
+      "App-Key": "b1391d83c8e0f6951c8690c51d4be6a5",
+      "App-Id":"d94d8f95"
+      
   }
+  }).then(
+    function(response) {
+      if (response.status !== 200) {
+        console.log('Looks like there was a problem. Status Code: ' +
+          response.status);
+        return;
+      }
+
+      // Examine the text in the response
+      response.json().then(function(data) {
+        console.log(data);
+        responseToJson(data.mentions)
+      });
+    }
+  )
+
+
+  // function load(url) {
+  //   const content = document.getElementById("input-feel").value;
+  //   // console.log('Request: '+content)
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.onreadystatechange = function () {
+  //     if (xhr.readyState === 4) {
+  //       var obj = JSON.parse(xhr.response)
+
+  //       responseToJson(obj.mentions)
+  //     }
+  //   }
+  //   xhr.open("POST", url, true);
+  //   xhr.setRequestHeader('Content-Type', 'application/json');
+  //   xhr.setRequestHeader('App-Key', 'b1391d83c8e0f6951c8690c51d4be6a5');
+  //   xhr.setRequestHeader('App-Id', 'd94d8f95');
+  //   xhr.send(JSON.stringify({
+  //     text: content
+  //   }));
+  // }
 }
 
 this.observations = {};

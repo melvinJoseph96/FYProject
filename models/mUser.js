@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
+  
   name: {
-    type: String,
-    required: true
-  },
-  jobTitle: {
     type: String,
     required: true
   },
@@ -17,8 +14,13 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  qualifications: {
-    type: String,
+  isMP: {
+    type: Boolean,
+    default: true
+  }
+  ,
+  details: {
+    type: Object,
     default: true
   }
 });

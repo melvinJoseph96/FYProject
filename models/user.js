@@ -13,11 +13,19 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  date: {
-    type: Date,
-    default: Date.now
+  isMP: {
+    type: Boolean,
+    required: false
   }
-  
+  ,
+  isAvailable: {
+    type: Boolean,
+    required: false
+  },
+  details: {
+    type: Object,
+    required: false
+  }
 });
 
 const User = mongoose.model('User', UserSchema);

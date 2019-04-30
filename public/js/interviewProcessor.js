@@ -54,6 +54,7 @@ function sendRequest(request){
 function initLoad(){
     var queryRes = sessionStorage.getItem("api_query")
     load(queryRes);
+    
 
 
 }
@@ -63,6 +64,8 @@ function load(queryResponse) {
     
     
     var jsonResponse = JSON.parse(queryResponse)
+    var query = sessionStorage.getItem("query")
+    console.log(query)
     
     
     console.log(jsonResponse)
@@ -78,7 +81,7 @@ function load(queryResponse) {
             <div class="col-8">
               ${condition.name}
               ${condition.probability >= 0.2
-                ? `<i class="fa fa-fw fa-eye"></i><a href data-id="${condition.id}" class="explain"></a>` : ``}
+                ? `<i class="fa fa-fw fa-eye"></i><a href data-id="${condition.id}" class="explain">explain</a>` : ``}
             </div>
             <div class="col-4">
               <div class="progress">
