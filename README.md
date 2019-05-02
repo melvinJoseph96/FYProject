@@ -17,5 +17,4 @@ In order to run my application you have to:
 2. run command npm intstall  - installs all the relevent dependencies 
 3. npm start - the script used to run the application. it calls the "node app.js"
 
-If this is unsuccessful i have mainly used GitHub as the source control and you can find
-and clone my repoository with this https url : https://github.com/melvinJoseph96/FYProject.git
+
