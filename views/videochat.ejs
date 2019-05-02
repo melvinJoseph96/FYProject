@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
     integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="https://bootswatch.com/4/journal/bootstrap.min.css" />
-  <script src="js/dashboardControl.js"></script> 
+  <!-- <script src="js/video_connector.js"></script>  -->
   <style>
       table.medicTable {
         font-family: arial, sans-serif;
@@ -37,6 +37,16 @@ td, th {
       <h1 class="mt-4">Video Chat Portal</h1> 
       <p class="lead mb-3">Online: <%= medicalUsers.length %></p>
       <br>
+      <div class ="video" id ="canvas_container">
+
+          <video id="video" width="100" height="80" autoplay></video>
+          <p>Split</p>
+
+          <video id="video2" width="500" height="400" autoplay></video>
+         
+          <!-- <canvas id="canvas" width="640" height="480"></canvas> -->
+  
+      
       
           <p class="lead mb-3" id = "medUsersOnline">Select which online medic you would like to talk to</p> 
           
@@ -44,6 +54,12 @@ td, th {
 
       
       <br>
+
+
+
+
+
+
       <table id= "medicTable">
           <tr><td><b>Title</b></td><td><b>Name</b></td><td><b>Expertise</b></td><td><b>Availability</b></td></tr>
             <% for(var i=0; i < medicalUsers.length; i++) { %>
@@ -62,7 +78,7 @@ td, th {
                     <% }%>   
 
                 </td>
-                 <td><button>Call</button></td>
+                 <td><button class="btn btn-primary" id= "connect_button" value ="<%= medicalUsers[i].email %>" >Call</button></td>
                  
 
 
@@ -72,27 +88,156 @@ td, th {
             
      
       <br>
+    <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+  </div>  
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+      var socket = io();
+
+var video = document.getElementById('video');
+var video2 = document.getElementById('video2');
+var email = document.getElementById("connect_button").value
+const peerConnection = new RTCPeerConnection({
+      iceServers: [    
+        {
+          urls: "stun:stun.stunprotocol.org"
+        }
+      ]
+  });
   
-      
+
+  socket.on("ice2", function(socket_ret,candidate){
+    var candidate = new RTCIceCandidate(candidate);
+  peerConnection.addIceCandidate(candidate)
+
+
+
+
+  })
+
+document.getElementById("connect_button").onclick = function(){
+
+  fetch("/users/getSocketID", {
+    method: 'POST', // or 'PUT'
+    body: JSON.stringify({
+      text: email
+    }), // data can be `string` or {object}!
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow'
+  }).then(function (response) {
+    console.log(response)
+    if (response.status !== 200) {
+      console.log('Looks like there was a problem. Status Code: ' +
+        response.status);
+      return;
+    }
+
+    response.json().then(function (data) {
+      console.log(data)
+      var socket_id_medic = data.socket_id
+     
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true
+        }).then(function (stream) {
+          //video.src = window.URL.createObjectURL(stream);
+
+          video.srcObject = stream;
+          video.play();
+        
+          
+          console.log(1)
+          stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+          //peerConnection.addTrack(stream.getVideoTracks()[0]);
+          peerConnection.createOffer()
+            .then(function(offer){
+              return peerConnection.setLocalDescription(offer)
+            
+            })          
+            .then(function () {
+              console.log(socket_id_medic)
+              var pcld = peerConnection.localDescription
+              
+
+              socket.emit('hello', socket_id_medic, pcld);
+              console.log(4)
+
+
+            })
+
+              peerConnection.onicecandidate = function handle(event){
+
+                if(event.candidate){
+
+                  socket.emit("sendice",socket_id_medic,event.candidate);
+
+
+                }
+
+
+
+
+              }
+
+
+           
+
+        });
+        socket.on('answer', function (message) {
+          console.log("recieved answer: ")
+          // var candidate = new RTCIceCandidate(message.candidate) 
+          // peerConnection.addIceCandidate(candidate)
+
+          var desc = new RTCSessionDescription(message)
+
+          peerConnection.setRemoteDescription(desc).then(function(){
+            return navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true
+        }).then(function(stream){
+          console.log("i'm calling")
+          document.getElementById("video2").srcObject = stream
+
+          stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+
+
+        })
+
+
+          })
+
+
+         })
+
+
+      }
+
+
+    })
+    // peerConnection.ontrack = function(event){
+    //   video2.srcObject = event.streams[0]
+    //   video.play();
+
+
+
+    // }
+
+
+  })
+  
+
+
+
+}
+
 
     
-
-
-
-  
-
-    <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
-  </div>
-
-
- 
-
-
-      
-      
-  
-
-
+  </script>
 
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

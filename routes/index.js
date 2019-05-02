@@ -12,8 +12,7 @@ router.get('/dashboard', ensureAuthenticated, function(req, res){
   
   if(req.user.isMP){
     
-    users.push(req.user)
-    medicalUsers.push(req.user)
+    
     
     res.render('MPdashboard', {
   
@@ -22,8 +21,7 @@ router.get('/dashboard', ensureAuthenticated, function(req, res){
 
 
   }else{
-    users.push(req.user)
-    clients.push(req.user)    
+      
 
 
     res.render('dashboard', {
@@ -58,7 +56,12 @@ router.get('/interview', ensureAuthenticated, (req,res) =>
 
 router.get('/chat', ensureAuthenticated, function(req, res){
 
-  console.log(req.body.text)
+  console.log("yoyo"+req.body.text)
+  console.log(req.user.email)
+  
+
+  users.push(req.user)
+    clients.push(req.user)  
   
   
   res.render('videochat', {
@@ -71,6 +74,8 @@ router.get('/chat', ensureAuthenticated, function(req, res){
 
 router.get('/videochatMP', ensureAuthenticated, function(req, res){
 console.log("made it to index")
+users.push(req.user)
+    medicalUsers.push(req.user)
   
   
   res.render('videochatMP', {

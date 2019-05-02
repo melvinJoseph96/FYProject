@@ -211,7 +211,33 @@ router.post('/videochat', (req, res, next) => {
 });
 
 
-;
+
+router.post('/getSocketID', (req, res, next) => {
+
+  var email = req.body.text
+  //console.log(email)
+  var to_Ret =0
+
+  for(var i =0; i>=users.length; i++){
+
+    if(users[i].email = email){
+      console.log(users[i].email)
+
+      to_Ret=i;
+
+    }
+
+  }
+  
+  var to_Ret2 = connections[to_Ret]
+  res.send({socket_id:to_Ret2})
+
+
+
+  
+
+
+});
 
 
 

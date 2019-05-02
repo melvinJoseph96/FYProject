@@ -15,17 +15,11 @@
 
 
 
-<body onload="dashLoad()">
+<body>
   
-    <div class="container">
+    <div id ="container" class="container" onload="startActivityRefresh()">
       <h1 class="mt-4">Dashboard</h1> 
-      <p class="lead mb-3">Welcome <%= user.name %></p>
-      <br>
-      
-          <p class="lead mb-3" id = "medUsersOnline">Number of Medical Professionals online = <%=medicalUsers.length%></p>
-
-
-     
+      <p class="lead mb-3">Welcome <%= user.name %></p>    
       
       <br>
       <p class="lead mb-3"><b>What would you like to do?</b></p>
@@ -50,31 +44,58 @@
   </div>
 
 
-  <script src="/socket.io/socket.io.js"></script>
+  <!-- <script src="/socket.io/socket.io.js"></script>
 
   <script>
     var socket = io();
     
     
 
-  </script>
+  </script> -->
   <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script>
-  jQuery(function ($) {
-    refresh();    
-
-    function refresh(){
-      //console.log("im in")
-      setTimeout(function(){
-        $('medUsersOnline').fadeOut('slow').load("dashboard").fadeIn('slow');
-        refresh();
+  // jQuery(function ($) {
+  //   console.log("im in")
+  //   $('medUserOnline').load('dashboard')
 
 
-      })
+  //   refresh();    
 
-    }
-  })
+  //   function refresh(){   
+  //     console.log("im in ref")  
+      
+      
+  //     setTimeout(function(){
+  //       console.log("im in timeout")
+  //       $('medUserOnline').load(function(){
+  //         console.log("im in load")
+  //         var online = medicalUsers.length
+  //         console.log(online)
+  //         document.getElementById("medUserOnline").innerText = online
+    
 
+
+  //       })
+  //       refresh();
+
+
+  //     })
+
+  //   }
+  // })
+  
+  function startActivityRefresh() {
+    timer = setInterval(function() {
+        $('#medUsersOnline').load('response.php');
+    }, 3000)
+}
+//   function update() {
+//     jQuery.get("response.php", function(data) {
+//     $("medUsersOnline").html(data);
+//     window.setTimeout(update, 2000);
+    
+//   });
+// }
 
       
       

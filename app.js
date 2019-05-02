@@ -7,8 +7,11 @@ const expressLayouts = require('express-ejs-layouts');
 var session = require('express-session');
 var passport = require('passport');
 var flash = require('connect-flash');
-var socket = require('socket.io');
+
 const cookieParser = require('cookie-parser')
+
+
+
 
 users =[]; // Total users logged in to application
 medicalUsers = []; // Total medical professionals logged in
@@ -18,6 +21,7 @@ readyMedics = [] // Total medics who are ready for chat
 
 //Init App
 const app = express();
+var server = require('http').createServer(app)
 
 
 
@@ -118,24 +122,72 @@ app.use('/users', require('./routes/users.js'));
 const port = process.env.port || 3000;
 
 
-var server = app.listen(port, function () {
+    server.listen(port, function () {
     console.log(`listening on port ${chalk.green(port)}`)
 });
 
 //socket setup
-var io = socket(server);
+var io = require('socket.io')(server);
+
 
 
 io.on('connection',function(socket){
-    //console.log(socket)
+    console.log(socket.id)
     
+
+    socket.on('hello',function(data,pcld) {
+        console.log("data: "+data)  
+
+
+        socket.broadcast.to(data).emit("offer",socket.id,pcld)
+
+      });
+
+      socket.on("sendice", function(socket_id,candidate){
+        console.log("sending ice to medic ") 
+
+        socket.broadcast.to(socket_id).emit("ice",socket.id,candidate)
+
+        
+
+
+      })
+      socket.on("sendice2", function(socket_id,candidate){
+
+        socket.broadcast.to(socket_id).emit("ice2",socket.id,candidate)
+
+        
+
+
+      })
+
+      socket.on('hello2', function(sock_id, ld){
+          console.log("answer: "+sock_id)
+
+        socket.broadcast.to(sock_id).emit("answer",ld)
+
+
+
+
+
+
+      })
     
     connections.push(socket.id);    
     // console.log(connections)    
     // console.log(users)
     console.log("medics: "+medicalUsers.length)
         console.log ("clients: "+clients.length)
+        console.log ("total users: "+users.length)
+
     console.log('Connected: %s sockets connected', connections.length);
+
+    const ind = connections.indexOf(socket.id)
+    
+
+    
+
+
 
 
     
@@ -163,6 +215,7 @@ io.on('connection',function(socket){
         // console.log(users)
         console.log("medics: "+medicalUsers.length)
         console.log ("clients: "+clients.length)
+        console.log ("total users: "+users.length)
         
         console.log('Disconnected: %s sockets connected', connections.length)
     
