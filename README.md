@@ -1,5 +1,6 @@
 # FYProject
-My final year project - An online Video Chat Application
+My final year project - An online Video Chat Application. I have built it using Nodejs and javascript with the help of WebRTC, MongoDB, HTML,CSS,JQuery and Visual Studio.
+
 I will explain how to install and run my application. The external application you need installed on your computer are:
 
 Windows/Linux/MacOs
